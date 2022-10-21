@@ -16,7 +16,7 @@ Config Details
 
 ✅Support: yes
 
-🛒Ultra Version: greyhathackers.sellpass.io/product/sypQVwtCJCW9
+🛒Config: greyhathackers.sellpass.io/product/sypQVwtCJCW9
 🎁$1 Coupon: 91jf6f2xh0w
 
 👾v1.2 preview: https://t.me/GreyH4tHackers/1073
