@@ -1,0 +1,71 @@
+[SETTINGS]
+{
+  "Name": "SubOver",
+  "SuggestedBots": 25,
+  "MaxCPM": 0,
+  "LastModified": "2022-09-27T23:16:33.2383023+01:00",
+  "AdditionalInfo": "SubDomain TakeOver v1.0.1 /~// https://t.me/OpenBulletResources",
+  "RequiredPlugins": [],
+  "Author": "l4gtr4",
+  "Version": "1.2.2",
+  "SaveEmptyCaptures": false,
+  "ContinueOnCustom": false,
+  "SaveHitsToTextFile": false,
+  "IgnoreResponseErrors": true,
+  "MaxRedirects": 8,
+  "NeedsProxies": false,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "BanLoopEvasionOverride": -1,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "QuitOnBanRetry": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#REQUEST_TARGET REQUEST GET "http://<URL>/" 
+  
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36" 
+  HEADER "Pragma: no-cache" 
+  HEADER "Accept: */*" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "<RESPONSECODE>" Contains "404" 
+  KEYCHAIN Failure OR 
+    KEY "<RESPONSECODE>" DoesNotContain "404" 
+
+#RECON_TARGET REQUEST POST "https://www.nslookup.io/api/v1/other-records" 
+  CONTENT "{\"domain\":\"<URL>\",\"dnsServer\":\"authoritative\",\"recordType\":\"cname\"}" 
+  CONTENTTYPE "application/x-www-form-urlencoded" 
+  HEADER "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0" 
+  HEADER "Accept: application/json, text/plain, */*" 
+  HEADER "Accept-Language: en-US,en;q=0.5" 
+  HEADER "Accept-Encoding: gzip, deflate, br" 
+  HEADER "Content-Type: application/json" 
+  HEADER "Content-Length: 78" 
+  HEADER "Origin: https://www.nslookup.io" 
+  HEADER "Connection: keep-alive" 
+  HEADER "Referer: https://www.nslookup.io/domains/updates.arlo.com/dns-records/cname/" 
+  HEADER "Cookie: klaro=%7B%22ga%22%3Atrue%7D; _ga_6WJ9E4BXRV=GS1.1.1662505714.2.0.1662505714.0.0.0; _ga=GA1.1.1731188626.1662473400" 
+  HEADER "Sec-Fetch-Dest: empty" 
+  HEADER "Sec-Fetch-Mode: cors" 
+  HEADER "Sec-Fetch-Site: same-origin" 
+  HEADER "TE: trailers" 
+
+#CAPTURE_CNAME PARSE "<SOURCE>" LR ",\"target\":\"" ".\"" CreateEmpty=FALSE -> CAP "CNAME" 
+
+#SAVE_TO_TXT UTILITY File "SubOver.txt" AppendLines "<URL> /~// CNAME: <CNAME>" 
+
